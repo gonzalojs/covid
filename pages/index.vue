@@ -1,72 +1,97 @@
 <template>
-  <div class="container">
-    <div>
-      <logo />
-      <h1 class="title">
-        CovidCl
-      </h1>
-      <h2 class="subtitle">
-        Covid-19 bot 
-      </h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+  <div>
+    <nav class="level">
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title is-4">Infectados</p>
+          <figure class="image has-image-centered is-96x96">
+            <img class="image is-96x96" src="../assets/images/total.svg" alt="Placeholder image" />
+          </figure>
+          <p class="title is-3">{{total}}</p>
+        </div>
       </div>
-    </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title is-4">Nuevos Hoy</p>
+          <figure class="image has-image-centered is-96x96">
+            <img class="image is-96x96" src="../assets/images/new.svg" alt="Placeholder image" />
+          </figure>
+          <p class="title is-3">{{nuevos}}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title is-4">Recuperados</p>
+          <figure class="image has-image-centered is-96x96">
+            <img
+              class="image is-96x96"
+              src="../assets/images/recovered.svg"
+              alt="Placeholder image"
+            />
+          </figure>
+          <p class="title is-3">{{recovered}}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title is-4">Serios</p>
+          <figure class="image has-image-centered is-96x96">
+            <img class="image is-96x96" src="../assets/images/serio.svg" alt="Placeholder image" />
+          </figure>
+          <p class="title is-3">{{serios}}</p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="title is-4">Muertes</p>
+          <figure class="image has-image-centered is-96x96">
+            <img class="image is-96x96" src="../assets/images/death.svg" alt="Placeholder image" />
+          </figure>
+          <p class="title is-3">{{deaths}}</p>
+        </div>
+      </div>
+    </nav>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-
 export default {
-  components: {
-    Logo
+  head() {
+    return {
+      link: [
+        {
+          rel: "stylesheet",
+          href:
+            "https://fonts.googleapis.com/css?family=Righteous&display=swap"
+        }
+      ]
+    };
+  },
+  async asyncData({ $axios }) {
+    const data = await $axios.$get(
+      "https://thevirustracker.com/free-api?countryTotal=CL"
+    );
+    return {
+      total: data.countrydata[0].total_cases,
+      recovered: data.countrydata[0].total_recovered,
+      deaths: data.countrydata[0].total_deaths,
+      nuevos: data.countrydata[0].total_new_cases_today,
+      serios: data.countrydata[0].total_serious_cases
+    };
   }
-}
+};
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-  display: flex;
+p {
+  font-family: 'Righteous', cursive;
+}
+.is-horizontal-center {
   justify-content: center;
-  align-items: center;
-  text-align: center;
 }
 
-.title {
-  font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  display: block;
-  font-weight: 300;
-  font-size: 100px;
-  color: #35495e;
-  letter-spacing: 1px;
-}
-
-.subtitle {
-  font-weight: 300;
-  font-size: 42px;
-  color: #526488;
-  word-spacing: 5px;
-  padding-bottom: 15px;
-}
-
-.links {
-  padding-top: 15px;
+.has-image-centered {
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
