@@ -105,6 +105,7 @@ export default {
   },
   head() {
     return {
+      title: 'Covid-19 Chile Up To Date',
       link: [
         {
           rel: "stylesheet",
